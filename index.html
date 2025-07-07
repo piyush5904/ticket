@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-gray-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ResolveWise | Customer Support</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .view { display: none; animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* Style for the login error message */
+        #login-error { display: none; }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- App Container -->
+    <div id="app-container">
+
+        <!-- ================================================================= -->
+        <!-- VIEW 1: LOGIN PAGE (Now with Realistic Logic) -->
+        <!-- Try logging in with the different credentials listed in the comments below. -->
+        <!-- ================================================================= -->
+        <section id="login-view" class="view min-h-screen flex items-center justify-center bg-gray-100 p-4">
+            <div class="w-full max-w-md">
+                <div class="text-center mb-8">
+                    <svg class="mx-auto h-12 w-auto text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" /></svg>
+                    <h1 class="text-3xl font-bold mt-4">ResolveWise</h1>
+                    <p class="text-gray-500">Sign in to your support dashboard</p>
+                    <!-- Instructions for different login experiences -->
+                    <div class="text-xs text-gray-500 mt-4 bg-gray-200 p-2 rounded-lg">
+                        <p><b>Use these credentials to test different roles:</b></p>
+                        <p><b>Agent:</b> agent@resolvewise.com</p>
+                        <p><b>Customer:</b> customer@resolvewise.com</p>
+                        <p>Password for all is 'password'</p>
+                    </div>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-lg">
+                    <form id="login-form">
+                        <div id="login-error" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-md mb-4" role="alert">
+                            <strong class="font-bold">Error:</strong>
+                            <span class="block sm:inline">Invalid credentials. Please try again.</span>
+                        </div>
+                        <div class="mb-4"><label for="email" class="block text-sm font-medium text-gray-700">Email Address</label><input type="email" id="email" class="mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" value="agent@resolvewise.com" required></div>
+                        <div class="mb-6"><label for="password" class="block text-sm font-medium text-gray-700">Password</label><input type="password" id="password" class="mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" value="password" required></div>
+                        <div><button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Sign In</button></div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================================================================= -->
+        <!-- VIEW 2: DASHBOARD PAGE (Now dynamically rendered for each user role) -->
+        <!-- ================================================================= -->
+        <section id="dashboard-view" class="view">
+            <header class="bg-white shadow-sm sticky top-0 z-10"><nav class="container mx-auto px-4 lg:px-8 flex justify-between items-center h-16"><div class="flex items-center space-x-2"><svg class="h-8 w-auto text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" /></svg><span class="font-bold text-xl">ResolveWise</span></div><div class="flex items-center space-x-4"><span class="text-sm">Welcome, <span class="font-semibold user-name-placeholder">User</span>!</span><button onclick="logout()" class="text-sm text-gray-600 hover:text-blue-600">Log Out</button></div></nav></header>
+            <main class="container mx-auto p-4 lg:p-8">
+                <div class="flex justify-between items-center mb-6">
+                    <h1 class="text-3xl font-bold dashboard-title">Support Tickets</h1>
+                    <!-- The "New Ticket" button will be shown or hidden based on user role -->
+                    <button id="new-ticket-button" onclick="showView('create-ticket-view')" class="px-5 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">New Ticket</button>
+                </div>
+                <!-- This container will be dynamically filled by JavaScript based on the logged-in user's role -->
+                <div id="ticket-list-container" class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <!-- Ticket list will be injected here -->
+                </div>
+            </main>
+        </section>
+
+        <!-- ================================================================= -->
+        <!-- VIEW 3: CREATE TICKET PAGE -->
+        <!-- ================================================================= -->
+        <section id="create-ticket-view" class="view">
+            <header class="bg-white shadow-sm sticky top-0 z-10"><nav class="container mx-auto px-4 lg:px-8 flex justify-between items-center h-16"><button onclick="showView('dashboard-view')" class="flex items-center space-x-2 text-gray-600 hover:text-blue-600"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" /></svg><span>Back to Dashboard</span></button><div class="flex items-center space-x-4"><span class="text-sm">Welcome, <span class="font-semibold user-name-placeholder">User</span>!</span><button onclick="logout()" class="text-sm text-gray-600 hover:text-blue-600">Log Out</button></div></nav></header>
+            <main class="container mx-auto p-4 lg:p-8"><div class="max-w-2xl mx-auto"><div class="bg-white p-8 rounded-2xl shadow-lg"><h1 class="text-2xl font-bold mb-6">Create a New Support Ticket</h1><form id="create-ticket-form"><div class="space-y-6"><div><label for="ticket-title" class="block text-sm font-medium text-gray-700">Title</label><input type="text" id="ticket-title" placeholder="e.g., Unable to reset my password" class="mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" required></div><div><label for="ticket-priority" class="block text-sm font-medium text-gray-700">Priority</label><select id="ticket-priority" class="mt-1 block w-full pl-3 pr-10 py-2 bg-gray-50 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"><option>Low</option><option selected>Medium</option><option>High</option></select></div><div><label for="ticket-description" class="block text-sm font-medium text-gray-700">Description</label><textarea id="ticket-description" rows="6" class="mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" placeholder="Please provide as much detail as possible..." required></textarea></div><div class="flex justify-end space-x-4 pt-4"><button type="button" onclick="showView('dashboard-view')" class="px-5 py-2 bg-gray-200 text-gray-700 font-semibold rounded-lg hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400">Cancel</button><button type="submit" class="px-5 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">Submit Ticket</button></div></div></form></div></div></main>
+        </section>
+
+        <!-- VIEW 4: TICKET DETAIL PAGE (not fully implemented in this mock to keep it simple) -->
+        <section id="ticket-detail-view" class="view">
+            <!-- The detail view content would be dynamically loaded here -->
+             <div class="text-center p-20">
+                <h1 class="text-3xl font-bold">Ticket Detail View</h1>
+                <p class="text-gray-600 mt-2">In a real app, this page would show the full conversation for a selected ticket.</p>
+                 <button onclick="showView('dashboard-view')" class="mt-8 px-6 py-2 bg-blue-600 text-white rounded-lg">Back to Dashboard</button>
+            </div>
+        </section>
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- JAVASCRIPT LOGIC (Significantly Enhanced for Realistic Auth) -->
+    <!-- ================================================================= -->
+    <script>
+        // --- 1. SIMULATED BACKEND DATA (like a MongoDB database) ---
+        const fakeUserDatabase = [
+            { id: 1, name: "Agent Smith", email: "agent@resolvewise.com", password: "password", role: "agent" },
+            { id: 2, name: "Jane Doe", email: "customer@resolvewise.com", password: "password", role: "customer" },
+            { id: 3, name: "Admin Alice", email: "admin@resolvewise.com", password: "password", role: "admin" }
+        ];
+
+        const fakeTicketDatabase = [
+            { id: 1024, customerId: 2, customerName: "Jane Doe", title: "Website Login Issue", status: "In Progress", priority: "High" },
+            { id: 1023, customerId: 4, customerName: "John Appleseed", title: "Billing Inquiry", status: "Closed", priority: "Low" },
+            { id: 1022, customerId: 5, customerName: "Alex Ray", title: "Feature Request: Dark Mode", status: "Open", priority: "Medium" },
+            { id: 1021, customerId: 2, customerName: "Jane Doe", title: "My new order hasn't shipped", status: "Open", priority: "Medium" },
+        ];
+
+        // --- 2. SIMULATED SESSION/STATE MANAGEMENT ---
+        // In React, this would be managed with Context API or Redux. Here, it's a simple global variable.
+        let currentUser = null;
+
+        // --- 3. CORE APPLICATION LOGIC ---
+
+        function showView(viewId) {
+            document.querySelectorAll('.view').forEach(view => view.style.display = 'none');
+            document.getElementById(viewId).style.display = 'block';
+        }
+        
+        function logout() {
+            currentUser = null;
+            // In a real app, you would also clear the JWT from localStorage.
+            document.getElementById('login-form').reset();
+            document.getElementById('login-error').style.display = 'none';
+            showView('login-view');
+        }
+
+        // This function dynamically builds the ticket list based on the user's role.
+        // This simulates React's component rendering logic.
+        function renderDashboard() {
+            const ticketListContainer = document.getElementById('ticket-list-container');
+            const dashboardTitle = document.querySelector('.dashboard-title');
+            const newTicketButton = document.getElementById('new-ticket-button');
+
+            // Determine which tickets to show based on the user's role
+            let ticketsToShow;
+            if (currentUser.role === 'agent' || currentUser.role === 'admin') {
+                ticketsToShow = fakeTicketDatabase;
+                dashboardTitle.textContent = "All Support Tickets";
+                newTicketButton.style.display = 'inline-block'; // Agents can create tickets
+            } else { // 'customer'
+                ticketsToShow = fakeTicketDatabase.filter(ticket => ticket.customerId === currentUser.id);
+                dashboardTitle.textContent = "My Support Tickets";
+                newTicketButton.style.display = 'inline-block'; // Customers can create tickets
+            }
+
+            // In React, this would be a map function returning JSX. Here we build HTML strings.
+            let ticketListHTML = '<div class="divide-y divide-gray-200">';
+            if (ticketsToShow.length === 0) {
+                ticketListHTML += '<p class="p-4 text-center text-gray-500">No tickets to display.</p>';
+            } else {
+                ticketsToShow.forEach(ticket => {
+                    const priorityColors = { Low: 'bg-green-500', Medium: 'bg-blue-500', High: 'bg-red-500' };
+                    const statusColors = { Open: 'bg-green-600', 'In Progress': 'bg-yellow-500', Closed: 'bg-gray-700' };
+
+                    ticketListHTML += `
+                        <div onclick="showView('ticket-detail-view')" class="p-4 hover:bg-gray-50 cursor-pointer flex justify-between items-center">
+                            <div>
+                                <p class="font-semibold text-lg text-gray-900">${ticket.title}</p>
+                                <p class="text-sm text-gray-500">Ticket #${ticket.id} • Customer: ${ticket.customerName}</p>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <span class="px-3 py-1 rounded-full text-xs font-semibold text-white ${priorityColors[ticket.priority] || 'bg-gray-400'}">${ticket.priority}</span>
+                                <span class="px-3 py-1 rounded-full text-xs font-semibold text-white ${statusColors[ticket.status] || 'bg-gray-400'}">${ticket.status}</span>
+                            </div>
+                        </div>`;
+                });
+            }
+            ticketListHTML += '</div>';
+            ticketListContainer.innerHTML = ticketListHTML;
+
+            // Update user name in all headers
+            document.querySelectorAll('.user-name-placeholder').forEach(el => el.textContent = currentUser.name);
+        }
+        
+        // --- 4. EVENT LISTENERS (Simulating user interaction) ---
+
+        // Handle the login form submission
+        document.getElementById('login-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const loginError = document.getElementById('login-error');
+
+            // In a REAL app, this is where you'd make a POST request to /api/users/login on your Node.js server.
+            // The server would check credentials against the MongoDB database.
+            
+            // For the mock-up, we check against our fake user database.
+            const foundUser = fakeUserDatabase.find(user => user.email === email && user.password === password);
+
+            if (foundUser) {
+                currentUser = foundUser;
+                // In a REAL app, the server would return a JWT. You'd save it like: localStorage.setItem('token', ...);
+                console.log(Login successful. User: ${currentUser.name}, Role: ${currentUser.role});
+                loginError.style.display = 'none';
+                renderDashboard();
+                showView('dashboard-view');
+            } else {
+                console.error("Login failed: Invalid credentials.");
+                loginError.style.display = 'block';
+            }
+        });
+
+        // Handle create ticket form submission
+        document.getElementById('create-ticket-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            // In a REAL app, POST to /api/tickets. The server adds the new ticket to MongoDB.
+            const newTicket = {
+                id: Math.floor(1025 + Math.random() * 1000), // Random new ID
+                customerId: currentUser.id,
+                customerName: currentUser.name,
+                title: document.getElementById('ticket-title').value,
+                priority: document.getElementById('ticket-priority').value,
+                status: 'Open'
+            };
+
+            fakeTicketDatabase.unshift(newTicket); // Add new ticket to the top of the list
+            
+            console.log("New ticket created:", newTicket);
+            alert('Ticket has been created! You will be returned to the dashboard.');
+            document.getElementById('create-ticket-form').reset();
+            renderDashboard(); // Re-render the dashboard to show the new ticket
+            showView('dashboard-view');
+        });
+        
+        // --- 5. INITIAL APPLICATION STARTUP ---
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is "logged in" from a previous session (not implemented here)
+            // If not, show the login view by default.
+            showView('login-view');
+        });
+    </script>
+</body>
+</html>
